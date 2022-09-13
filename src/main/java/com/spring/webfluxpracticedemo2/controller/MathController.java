@@ -23,6 +23,6 @@ public class MathController {
 
     @GetMapping("table/{input}")
     public List<Response> multiplicationTable(@PathVariable int input){
-        return this.multiplicationTable(input);
+        return this.mathService.multiplicationTable(input);
     }
 }
