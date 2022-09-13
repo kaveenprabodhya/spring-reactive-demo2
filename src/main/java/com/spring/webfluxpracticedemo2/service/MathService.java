@@ -15,6 +15,7 @@ public class MathService {
 
     public List<Response> multiplicationTable(int input){
         return IntStream.range(1,10)
+                .peek(value -> SleepUtil.sleepSeconds(1))
                 .mapToObj(i -> new Response(i * input))
                 .collect(Collectors.toList());
     }
