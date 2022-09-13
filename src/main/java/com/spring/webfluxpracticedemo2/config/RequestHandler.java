@@ -1,7 +1,9 @@
 package com.spring.webfluxpracticedemo2.config;
 
+import com.spring.webfluxpracticedemo2.dto.InputFailedValidationResponse;
 import com.spring.webfluxpracticedemo2.dto.MultiplyRequestDTO;
 import com.spring.webfluxpracticedemo2.dto.Response;
+import com.spring.webfluxpracticedemo2.exceptions.InputValidationException;
 import com.spring.webfluxpracticedemo2.service.ReactiveMathService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -45,5 +47,15 @@ public class RequestHandler {
                 .ok()
                 .contentType(MediaType.TEXT_EVENT_STREAM)
                 .body(responseMono, Response.class);
+    }
+
+    public Mono<ServerResponse> squareHandlerWithValidation(ServerRequest serverRequest){
+        int input = Integer.parseInt(serverRequest.pathVariable("input"));
+        if(input < 10 && input > 20){
+//            return ServerResponse.badRequest().bodyValue(new InputFailedValidationResponse());
+            return Mono.error(new InputValidationException(input));
+        }
+        Mono<Response> responseMono = this.mathService.findSquare(input);
+        return ServerResponse.ok().body(responseMono, Response.class);
     }
 }
