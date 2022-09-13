@@ -20,6 +20,13 @@ public class RouterConfig {
     private RequestHandler requestHandler;
 
     @Bean
+    public RouterFunction<ServerResponse> highLevelRouter(){
+        return RouterFunctions.route()
+                .path("router", this::serverResponseRouterFunction)
+                .build();
+    }
+
+    @Bean
     public RouterFunction<ServerResponse> serverResponseRouterFunction(){
         return RouterFunctions.route()
                 .GET("square/{input}", requestHandler::squareHandler)
