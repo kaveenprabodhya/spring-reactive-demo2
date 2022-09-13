@@ -27,8 +27,12 @@ public class RouterConfig {
     private RouterFunction<ServerResponse> serverResponseRouterFunction(){
         return RouterFunctions.route()
 //                .GET("square/{input}", requestHandler::squareHandler)
-                .GET("square/{input}", RequestPredicates.path("*/1?"),requestHandler::squareHandler)
-                .GET("square/{input}", request -> ServerResponse.badRequest().bodyValue("only 10 -19 allowed!"))
+                .GET("square/{input}",
+                        RequestPredicates
+                                .path("*/1?")
+                                .or(RequestPredicates.path("*/20")),
+                        requestHandler::squareHandler)
+                .GET("square/{input}", request -> ServerResponse.badRequest().bodyValue("only 10 -20 allowed!"))
                 .GET("table/{input}", requestHandler::tableHandler)
                 .GET("table/{input}/stream", requestHandler::tableStreamHandler)
                 .POST("multiply", requestHandler::multiplyHandler)
