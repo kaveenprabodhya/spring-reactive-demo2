@@ -14,6 +14,7 @@ public class RequestHeaderTest extends BaseIT{
                 .uri("reactive-math/multiply")
                 .bodyValue(buildRequestDto(5, 2))
                 .headers(httpHeaders -> httpHeaders.set("someKey", "someVal"))
+//                .headers(h -> h.setBasicAuth("username", "password"))
                 .retrieve()
                 .bodyToMono(Response.class)
                 .doOnNext(System.out::println);
