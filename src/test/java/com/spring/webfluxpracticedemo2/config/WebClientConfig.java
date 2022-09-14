@@ -19,11 +19,28 @@ public class WebClientConfig {
                 .build();
     }
 
+//    private Mono<ClientResponse> sessionToken(ClientRequest request, ExchangeFunction function){
+//        System.out.println("Generating session token");
+//        ClientRequest clientRequest = ClientRequest
+//                .from(request)
+//                .headers(httpHeaders -> httpHeaders.setBearerAuth("some-lengthy-jwt")).build();
+//        return function.exchange(clientRequest);
+//    }
     private Mono<ClientResponse> sessionToken(ClientRequest request, ExchangeFunction function){
-        System.out.println("Generating session token");
-        ClientRequest clientRequest = ClientRequest
-                .from(request)
-                .headers(httpHeaders -> httpHeaders.setBearerAuth("some-lengthy-jwt")).build();
+        ClientRequest clientRequest = request.attribute("auth")
+                .map(o -> o.equals("basic") ? withBasicAuth(request) : withOAuth(request))
+                .orElse(request);
         return function.exchange(clientRequest);
+    }
+
+    private ClientRequest withBasicAuth(ClientRequest request){
+        return ClientRequest.from(request)
+                .headers(httpHeaders -> httpHeaders.setBasicAuth("username", "password"))
+                .build();
+    }
+    private ClientRequest withOAuth(ClientRequest request){
+        return ClientRequest.from(request)
+                .headers(httpHeaders -> httpHeaders.setBearerAuth("some-token"))
+                .build();
     }
 }
