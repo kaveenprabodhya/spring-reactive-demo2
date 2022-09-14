@@ -3,15 +3,10 @@ package com.spring.webfluxpracticedemo2;
 import com.spring.webfluxpracticedemo2.dto.MultiplyRequestDTO;
 import com.spring.webfluxpracticedemo2.dto.Response;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 public class PostRequestTest extends BaseIT {
-    @Autowired
-    private WebClient webClient;
-
     @Test
     public void postTest(){
         Mono<Response> responseMono = this.webClient

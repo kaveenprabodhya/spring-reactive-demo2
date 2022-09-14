@@ -8,9 +8,6 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 public class GetSingleResponseTest extends BaseIT{
-    @Autowired
-    private WebClient webClient;
-
     @Test
     public void blockTest(){
          Response response = this.webClient
